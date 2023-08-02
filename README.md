@@ -7,7 +7,7 @@ This web application uses webkitSpeechRecognition and PHP to log the output.
 
 
 
-When you press the STOP button, a HTTP request sends the value of the output to a database
+When you press the STOP button, an HTTP request sends the value of the output to a database. 
 I added a message to let you know what has been stored.
 
 
