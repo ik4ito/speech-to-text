@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Speech to Text</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="voice_to_text">
+      <h1>Speech to Text</h1>
+      <button id="start-btn">Start</button>
+      <button id="stop-btn">Stop</button><br><br>
+      <p id="status"></p><br><br>
+      <textarea id="output"></textarea>
+    </div>
+
+    <script>
+      const startBtn = document.querySelector("#start-btn");
+      const stopBtn = document.querySelector("#stop-btn");
+      const output = document.querySelector("#output");
+      const status = document.querySelector("#status");
+
+      let recognition = new webkitSpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      
+      recognition.onresult = (event) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        output.value = transcript;
+      };
+
+      startBtn.addEventListener("click", () => {
+        recognition.start();
+        status.textContent = "Speak now";
+        
+      });
+
+      stopBtn.addEventListener("click", () => {
+        recognition.stop();
+        
+        let speech = output.value;
+        status.textContent = `(${speech}) is saved to the database`;
+        // Send an HTTP POST request to save_output.php with the speech variable as data
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", "saveoutput.php");
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(`speech=${encodeURIComponent(speech)}`);
+        output.value = "";
+
+        
+      });
+    </script>
+  </body>
+</html>
