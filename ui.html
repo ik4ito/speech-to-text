@@ -21,7 +21,6 @@
 
       let recognition = new webkitSpeechRecognition();
       recognition.continuous = true;
-      recognition.interimResults = true;
       
       recognition.onresult = (event) => {
         let transcript = "";
